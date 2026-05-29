@@ -54,7 +54,7 @@
   <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
   <text x="748" y="244" class="item">Install: npm install</text>
   <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
-  <text x="748" y="298" class="item">Files sampled: 18</text>
+  <text x="748" y="298" class="item">Files sampled: 19</text>
   </g>
 <g class="scene s2">
   <text x="64" y="178" class="eyebrow">CAPTURE</text>

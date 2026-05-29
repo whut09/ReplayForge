@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { githubSlug } from "../src/cli.mjs";
 import { planDemo } from "../src/demo-planner.mjs";
 import { composeReadmeSection } from "../src/readme-composer.mjs";
 
@@ -53,4 +54,10 @@ test("readme section points at generated root-relative asset", () => {
   assert.match(markdown, /!\[sample-project demo\]\(\.\/assets\/replayforge\/demo\.svg\)/);
   assert.match(markdown, /npm install/);
   assert.match(markdown, /npm run demo/);
+});
+
+test("github urls become stable output slugs", () => {
+  assert.equal(githubSlug("https://github.com/whut09/ReplayForge"), "whut09-ReplayForge");
+  assert.equal(githubSlug("https://github.com/whut09/ReplayForge.git"), "whut09-ReplayForge");
+  assert.equal(githubSlug("git@github.com:whut09/ReplayForge.git"), "whut09-ReplayForge");
 });
