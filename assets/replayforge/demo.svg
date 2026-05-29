@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <style>
+    .bg { fill: #101214; }
+    .panel { fill: #1b1f23; stroke: #30363d; stroke-width: 1; }
+    .title { fill: #f5f7fa; font: 700 54px system-ui, sans-serif; }
+    .eyebrow { fill: #42d392; font: 700 16px system-ui, sans-serif; letter-spacing: 2px; }
+    .body { fill: #b9c0c7; font: 22px system-ui, sans-serif; }
+    .item { fill: #dce3ea; font: 18px system-ui, sans-serif; }
+    .mono { fill: #dce3ea; font: 16px Consolas, monospace; }
+    .scene { opacity: 0; animation: show 20s infinite; }
+    .s0 { animation-delay: 0s; }
+    .s1 { animation-delay: 5s; }
+    .s2 { animation-delay: 10s; }
+    .s3 { animation-delay: 15s; }
+    @keyframes show {
+      0%, 6% { opacity: 0; transform: translateY(18px); }
+      10%, 24% { opacity: 1; transform: translateY(0); }
+      30%, 100% { opacity: 0; transform: translateY(-18px); }
+    }
+  </style>
+  <rect class="bg" width="1280" height="720"/>
+  <rect x="0" y="0" width="1280" height="720" fill="#18202a" opacity="0.55"/>
+  <rect x="48" y="38" width="28" height="28" rx="7" fill="#42d392"/>
+  <text x="88" y="60" class="body" font-size="18">ReplayForge</text>
+  <text x="48" y="676" class="body" font-size="16">replayforge demo generated from project signals</text>
+  <g class="scene s0">
+  <text x="64" y="178" class="eyebrow">EXPLAIN</text>
+  <text x="64" y="245" class="title">replayforge</text>
+  <text x="64" y="354" class="body">从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。</text>
+  <rect x="690" y="136" width="526" height="420" rx="8" class="panel"/>
+  <circle cx="728" cy="184" r="5" fill="#7aa2ff"/>
+  <text x="748" y="190" class="item">Generate README demos from real project runs,</text>
+  <text x="748" y="218" class="item">code understanding, or both.</text>
+  <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
+  <text x="748" y="244" class="item">`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。</text>
+  <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
+  <text x="748" y="298" class="item">`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。</text>
+  <circle cx="728" cy="346" r="5" fill="#7aa2ff"/>
+  <text x="748" y="352" class="item">`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README</text>
+  <text x="748" y="380" class="item">首页、项目介绍页和产品展示。</text>
+  <circle cx="728" cy="400" r="5" fill="#7aa2ff"/>
+  <text x="748" y="406" class="item">Playwright browser capture for Web App flows</text>
+  </g>
+<g class="scene s1">
+  <text x="64" y="178" class="eyebrow">ANALYZE</text>
+  <text x="64" y="245" class="title">Code and docs become</text>
+  <text x="64" y="309" class="title">scenes</text>
+  <text x="64" y="354" class="body">The generator reads common project files and</text>
+  <text x="64" y="386" class="body">promotes the strongest facts into a</text>
+  <text x="64" y="418" class="body">storyboard.</text>
+  <rect x="690" y="136" width="526" height="420" rx="8" class="panel"/>
+  <circle cx="728" cy="184" r="5" fill="#7aa2ff"/>
+  <text x="748" y="190" class="item">Detected type: cli</text>
+  <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
+  <text x="748" y="244" class="item">Install: npm install</text>
+  <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
+  <text x="748" y="298" class="item">Files sampled: 18</text>
+  </g>
+<g class="scene s2">
+  <text x="64" y="178" class="eyebrow">CAPTURE</text>
+  <text x="64" y="245" class="title">Real command output</text>
+  <text x="64" y="354" class="body">ReplayForge captures the commands users should</text>
+  <text x="64" y="386" class="body">trust most: install, run, generate and verify.</text>
+  <rect x="690" y="136" width="526" height="420" rx="8" class="panel"/>
+  <circle cx="728" cy="184" r="5" fill="#7aa2ff"/>
+  <text x="748" y="190" class="item">$ node ./bin/replayforge.mjs analyze</text>
+  <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
+  <text x="748" y="244" class="item">{ &quot;name&quot;: &quot;replayforge&quot;, &quot;description&quot;:</text>
+  <text x="748" y="272" class="item">&quot;Generate README demos from real project runs,</text>
+  <text x="748" y="300" class="item">code understanding, or both.&quot;, &quot;type&quot;: &quot;cli&quot;,</text>
+  <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
+  <text x="748" y="298" class="item">$ node ./bin/replayforge.mjs generate --mode</text>
+  <text x="748" y="326" class="item">hybrid</text>
+  <circle cx="728" cy="346" r="5" fill="#7aa2ff"/>
+  <text x="748" y="352" class="item">Generated assets\replayforge Mode: hybrid README</text>
+  <text x="748" y="380" class="item">section: assets\replayforge\README.demo.md</text>
+  <text x="748" y="408" class="item">Animated demo: assets\replayforge\demo.svg</text>
+  </g>
+<g class="scene s3">
+  <text x="64" y="178" class="eyebrow">EXPORT</text>
+  <text x="64" y="245" class="title">README-ready output</text>
+  <text x="64" y="354" class="body">ReplayForge writes a reusable README section</text>
+  <text x="64" y="386" class="body">plus a browser-ready presentation asset.</text>
+  <rect x="690" y="136" width="526" height="420" rx="8" class="panel"/>
+  <circle cx="728" cy="184" r="5" fill="#7aa2ff"/>
+  <text x="748" y="190" class="item">README.demo.md</text>
+  <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
+  <text x="748" y="244" class="item">demo.svg</text>
+  <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
+  <text x="748" y="298" class="item">demo.html</text>
+  <circle cx="728" cy="346" r="5" fill="#7aa2ff"/>
+  <text x="748" y="352" class="item">storyboard.json</text>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+{
+  "mode": "hybrid",
+  "outputDir": "assets/replayforge",
+  "project": {
+    "name": "ReplayForge",
+    "tagline": "从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。"
+  },
+  "explain": {
+    "includeFiles": [
+      "README.md",
+      "package.json",
+      "src"
+    ],
+    "maxHighlights": 5
+  },
+  "capture": {
+    "kind": "terminal",
+    "commands": [
+      "node ./bin/replayforge.mjs analyze",
+      "node ./bin/replayforge.mjs generate --mode hybrid"
+    ],
+    "url": "http://localhost:3000",
+    "actions": []
+  },
+  "readme": {
+    "title": "Demo",
+    "insertStart": "<!-- replayforge:start -->",
+    "insertEnd": "<!-- replayforge:end -->"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "replayforge",
+  "version": "0.1.0",
+  "description": "Generate README demos from real project runs, code understanding, or both.",
+  "type": "module",
+  "bin": {
+    "replayforge": "./bin/replayforge.mjs"
+  },
+  "scripts": {
+    "start": "node ./bin/replayforge.mjs",
+    "generate": "node ./bin/replayforge.mjs generate",
+    "init": "node ./bin/replayforge.mjs init",
+    "record": "node ./bin/replayforge.mjs record",
+    "test": "node --test"
+  },
+  "keywords": [
+    "readme",
+    "demo",
+    "gif",
+    "github",
+    "documentation",
+    "presentation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": "ready",
+  "message": "Open demo.html in a browser or wire this plan to Playwright/ffmpeg for mp4/gif export.",
+  "input": "assets\\replayforge\\demo.html",
+  "recommendedOutputs": [
+    "demo.mp4",
+    "demo.gif"
+  ],
+  "scenes": [
+    "replayforge",
+    "Code and docs become scenes",
+    "Real command output",
+    "README-ready output"
+  ]
+}

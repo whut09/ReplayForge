@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>replayforge ReplayForge Demo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #101214;
+        --panel: #1b1f23;
+        --text: #f5f7fa;
+        --muted: #b9c0c7;
+        --accent: #42d392;
+        --accent-2: #7aa2ff;
+        --line: #30363d;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      main {
+        width: min(100vw, 1280px);
+        aspect-ratio: 16 / 9;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #101214 0%, #18202a 50%, #13191d 100%);
+        border: 1px solid var(--line);
+      }
+      .brand {
+        position: absolute;
+        top: 34px;
+        left: 48px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      }
+      .scene {
+        position: absolute;
+        inset: 96px 64px 56px;
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 36px;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: scene 20s infinite;
+      }
+      .scene-0 { animation-delay: 0s; }
+      .scene-1 { animation-delay: 5s; }
+      .scene-2 { animation-delay: 10s; }
+      .scene-3 { animation-delay: 15s; }
+      @keyframes scene {
+        0%, 6% { opacity: 0; transform: translateY(18px); }
+        10%, 24% { opacity: 1; transform: translateY(0); }
+        30%, 100% { opacity: 0; transform: translateY(-18px); }
+      }
+      .copy {
+        align-self: center;
+      }
+      .eyebrow {
+        color: var(--accent);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 15px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        margin: 0 0 20px;
+        font-size: 58px;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 22px;
+        line-height: 1.45;
+      }
+      .visual {
+        align-self: center;
+        min-height: 390px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(27, 31, 35, 0.82);
+        padding: 24px;
+        box-shadow: 0 26px 80px rgba(0, 0, 0, 0.35);
+      }
+      .item {
+        display: flex;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        color: #dce3ea;
+        font-size: 18px;
+        line-height: 1.35;
+      }
+      .item:last-child { border-bottom: 0; }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-top: 8px;
+        flex: 0 0 auto;
+        background: var(--accent-2);
+      }
+      .terminal {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 16px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="brand"><span class="mark"></span><span>ReplayForge</span></div>
+      <section class="scene scene-0">
+        <div class="copy">
+          <div class="eyebrow">Explain</div>
+          <h1>replayforge</h1>
+          <p>从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。</p>
+        </div>
+        <div class="visual ">
+          <div class="item"><span class="dot"></span><span>Generate README demos from real project runs, code understanding, or both.</span></div>
+          <div class="item"><span class="dot"></span><span>`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。</span></div>
+          <div class="item"><span class="dot"></span><span>`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。</span></div>
+          <div class="item"><span class="dot"></span><span>`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README 首页、项目介绍页和产品展示。</span></div>
+          <div class="item"><span class="dot"></span><span>Playwright browser capture for Web App flows</span></div>
+        </div>
+      </section>
+<section class="scene scene-1">
+        <div class="copy">
+          <div class="eyebrow">Analyze</div>
+          <h1>Code and docs become scenes</h1>
+          <p>The generator reads common project files and promotes the strongest facts into a storyboard.</p>
+        </div>
+        <div class="visual ">
+          <div class="item"><span class="dot"></span><span>Detected type: cli</span></div>
+          <div class="item"><span class="dot"></span><span>Install: npm install</span></div>
+          <div class="item"><span class="dot"></span><span>Files sampled: 18</span></div>
+        </div>
+      </section>
+<section class="scene scene-2">
+        <div class="copy">
+          <div class="eyebrow">Capture</div>
+          <h1>Real command output</h1>
+          <p>ReplayForge captures the commands users should trust most: install, run, generate and verify.</p>
+        </div>
+        <div class="visual terminal">
+          <div class="item"><span class="dot"></span><span>$ node ./bin/replayforge.mjs analyze</span></div>
+          <div class="item"><span class="dot"></span><span>{
+  &quot;name&quot;: &quot;replayforge&quot;,
+  &quot;description&quot;: &quot;Generate README demos from real project runs, code understanding, or both.&quot;,
+  &quot;type&quot;: &quot;cli&quot;,
+  &quot;installCommands&quot;: [
+    &quot;npm install&quot;
+  ],
+  &quot;runCommands&quot;: [
+    &quot;npm run start&quot;,
+    &quot;npm run generate&quot;,
+    &quot;npm run test&quot;
+  ],
+  &quot;highlights&quot;: [
+    &quot;Generate README demos from real project runs, code understanding, or both.&quot;,
+    &quot;`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。&quot;,
+    &quot;`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。&quot;,
+    &quot;`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README 首页、项目介绍页和产品展示。&quot;,
+    &quot;Playwright browser capture for Web App flows&quot;
+  ],
+  &quot;files&quot;: [
+    &quot;.github/workflows/replayforge.yml&quot;,
+    &quot;.gitignore&quot;,
+    &quot;.replayforge/profile.json&quot;,
+    &quot;.replayforge/storyboard.json&quot;,
+    &quot;bin/replayforge.mjs&quot;,
+    &quot;LICENSE&quot;,
+    &quot;package.json&quot;,
+    &quot;README.md&quot;,
+    &quot;replayforge.config.json&quot;,
+    &quot;src/capture-runner.mjs&quot;,
+    &quot;src/cli.mjs&quot;,
+    &quot;src/config.mjs&quot;,
+    &quot;src/demo-planner.mjs&quot;,
+    &quot;src/fs-utils.mjs&quot;,
+    &quot;src/presentation-renderer.mjs&quot;,
+    &quot;src/project-analyzer.mjs&quot;,
+    &quot;src/readme-composer.mjs&quot;,
+    &quot;test/replayforge.test.mjs&quot;
+  ],
+  &quot;detectedAt&quot;: &quot;2026-05-29T12:36:02.584Z&quot;
+}</span></div>
+          <div class="item"><span class="dot"></span><span>$ node ./bin/replayforge.mjs generate --mode hybrid</span></div>
+          <div class="item"><span class="dot"></span><span>Generated assets\replayforge
+Mode: hybrid
+README section: assets\replayforge\README.demo.md
+Animated demo: assets\replayforge\demo.svg
+Presentation: assets\replayforge\demo.html</span></div>
+        </div>
+      </section>
+<section class="scene scene-3">
+        <div class="copy">
+          <div class="eyebrow">Export</div>
+          <h1>README-ready output</h1>
+          <p>ReplayForge writes a reusable README section plus a browser-ready presentation asset.</p>
+        </div>
+        <div class="visual ">
+          <div class="item"><span class="dot"></span><span>README.demo.md</span></div>
+          <div class="item"><span class="dot"></span><span>demo.svg</span></div>
+          <div class="item"><span class="dot"></span><span>demo.html</span></div>
+          <div class="item"><span class="dot"></span><span>storyboard.json</span></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
