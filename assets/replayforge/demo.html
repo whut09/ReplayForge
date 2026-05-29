@@ -136,10 +136,10 @@
         </div>
         <div class="visual ">
           <div class="item"><span class="dot"></span><span>Generate README demos from real project runs, code understanding, or both.</span></div>
+          <div class="item"><span class="dot"></span><span>从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。</span></div>
           <div class="item"><span class="dot"></span><span>`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。</span></div>
           <div class="item"><span class="dot"></span><span>`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。</span></div>
           <div class="item"><span class="dot"></span><span>`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README 首页、项目介绍页和产品展示。</span></div>
-          <div class="item"><span class="dot"></span><span>Playwright browser capture for Web App flows</span></div>
         </div>
       </section>
 <section class="scene scene-1">
@@ -151,7 +151,7 @@
         <div class="visual ">
           <div class="item"><span class="dot"></span><span>Detected type: cli</span></div>
           <div class="item"><span class="dot"></span><span>Install: npm install</span></div>
-          <div class="item"><span class="dot"></span><span>Files sampled: 19</span></div>
+          <div class="item"><span class="dot"></span><span>Files sampled: 40</span></div>
         </div>
       </section>
 <section class="scene scene-2">
@@ -174,8 +174,14 @@
     &quot;npm run generate&quot;,
     &quot;npm run test&quot;
   ],
+  &quot;captureCommands&quot;: [
+    &quot;npm run start&quot;,
+    &quot;npm run generate&quot;,
+    &quot;npm run test&quot;
+  ],
   &quot;highlights&quot;: [
     &quot;Generate README demos from real project runs, code understanding, or both.&quot;,
+    &quot;从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。&quot;,
     &quot;`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。&quot;,
     &quot;`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。&quot;,
     &quot;`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README 首页、项目介绍页和产品展示。&quot;,
@@ -184,26 +190,14 @@
   &quot;files&quot;: [
     &quot;.github/workflows/replayforge.yml&quot;,
     &quot;.gitignore&quot;,
+    &quot;.replayforge/local/profile.json&quot;,
+    &quot;.replayforge/local/storyboard.json&quot;,
     &quot;.replayforge/profile.json&quot;,
-    &quot;.replayforge/storyboard.json&quot;,
-    &quot;bin/replayforge.mjs&quot;,
-    &quot;LICENSE&quot;,
-    &quot;package-lock.json&quot;,
-    &quot;package.json&quot;,
-    &quot;README.md&quot;,
-    &quot;replayforge.config.json&quot;,
-    &quot;src/capture-runner.mjs&quot;,
-    &quot;src/cli.mjs&quot;,
-    &quot;src/config.mjs&quot;,
-    &quot;src/demo-planner.mjs&quot;,
-    &quot;src/fs-utils.mjs&quot;,
-    &quot;src/presentation-renderer.mjs&quot;,
-    &quot;src/project-analyzer.mjs&quot;,
-    &quot;src/readme-composer.mjs&quot;,
-    &quot;test/replayforge.test.mjs&quot;
-  ],
-  &quot;detectedAt&quot;: &quot;2026-05-29T13:33:36.670Z&quot;
-}</span></div>
+    &quot;.replayforge/remotes/whut09-allTranslate/.github/dependabot.yml&quot;,
+    &quot;.replayforge/remotes/whut09-allTranslate/.github/FUNDING.yml&quot;,
+    &quot;.replayforge/remotes/whut09-allTranslate/.github/ISSUE_TEMPLATE/blank.yaml&quot;,
+    &quot;.replayforge/remotes/whut09-allTranslate/.github/ISSUE_TEMPLAT
+...</span></div>
           <div class="item"><span class="dot"></span><span>$ node ./bin/replayforge.mjs generate --mode hybrid</span></div>
           <div class="item"><span class="dot"></span><span>Generated assets\replayforge
 Mode: hybrid

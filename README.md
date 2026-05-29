@@ -40,6 +40,20 @@ node ./bin/replayforge.mjs generate --mode hybrid
 node ./bin/replayforge.mjs generate https://github.com/owner/repo --allow-run
 ```
 
+`--allow-run` 只允许 ReplayForge 执行已经配置或安全检测到的 capture 命令。对于没有明确 demo/start 脚本的项目，ReplayForge 会生成解释动画和 Quick Start，但不会猜测执行可能需要真实输入、密钥或样例文件的命令。要录制真实运行效果，请在目标项目中添加：
+
+```json
+{
+  "capture": {
+    "kind": "terminal",
+    "commands": [
+      "your-cli --help",
+      "your-cli examples/input.pdf -o output"
+    ]
+  }
+}
+```
+
 ## What It Generates
 
 本地项目默认输出：

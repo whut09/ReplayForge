@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { githubSlug } from "../src/cli.mjs";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import { githubSlug, parseOptions } from "../src/cli.mjs";
+import { analyzeProject } from "../src/project-analyzer.mjs";
 import { planDemo } from "../src/demo-planner.mjs";
 import { composeReadmeSection } from "../src/readme-composer.mjs";
 
@@ -60,4 +64,42 @@ test("github urls become stable output slugs", () => {
   assert.equal(githubSlug("https://github.com/whut09/ReplayForge"), "whut09-ReplayForge");
   assert.equal(githubSlug("https://github.com/whut09/ReplayForge.git"), "whut09-ReplayForge");
   assert.equal(githubSlug("git@github.com:whut09/ReplayForge.git"), "whut09-ReplayForge");
+});
+
+test("unknown allow-run typo is rejected", () => {
+  assert.throws(
+    () => parseOptions(["https://github.com/whut09/allTranslate", "--allow-ru"]),
+    /Did you mean "--allow-run"/
+  );
+});
+
+test("python projects use README commands for quick start but not capture", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "replayforge-python-"));
+  try {
+    await writeFile(path.join(dir, "pyproject.toml"), `[project]
+name = "paper-tool"
+description = "Short package description"
+
+[project.scripts]
+paper-tool = "paper_tool.cli:main"
+`);
+    await writeFile(path.join(dir, "README.md"), `# paper-tool
+
+Readable README description.
+
+\`\`\`bash
+pip install -e .
+paper-tool input.pdf -o output
+paper-tool -i
+\`\`\`
+`);
+
+    const analyzed = await analyzeProject(dir);
+    assert.equal(analyzed.name, "paper-tool");
+    assert.equal(analyzed.description, "Readable README description.");
+    assert.deepEqual(analyzed.runCommands, ["paper-tool input.pdf -o output", "paper-tool -i"]);
+    assert.deepEqual(analyzed.captureCommands, []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });

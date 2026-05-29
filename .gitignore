@@ -1,5 +1,6 @@
 node_modules/
 dist/
 .replayforge/
+assets/replayforge/whut09-*/
 .env
 .DS_Store

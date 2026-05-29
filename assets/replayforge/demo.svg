@@ -32,14 +32,14 @@
   <text x="748" y="190" class="item">Generate README demos from real project runs,</text>
   <text x="748" y="218" class="item">code understanding, or both.</text>
   <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
-  <text x="748" y="244" class="item">`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。</text>
+  <text x="748" y="244" class="item">从真实运行效果、代码理解，或两者结合，自动生成高质量的项目演示内容。</text>
   <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
-  <text x="748" y="298" class="item">`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。</text>
+  <text x="748" y="298" class="item">`capture`：真实录制项目的运行效果。适合 Web App、CLI、组件库。</text>
   <circle cx="728" cy="346" r="5" fill="#7aa2ff"/>
-  <text x="748" y="352" class="item">`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README</text>
-  <text x="748" y="380" class="item">首页、项目介绍页和产品展示。</text>
+  <text x="748" y="352" class="item">`explain`：读取代码和文档，生成解释动画。适合库、框架、AI 工具、复杂 CLI。</text>
   <circle cx="728" cy="400" r="5" fill="#7aa2ff"/>
-  <text x="748" y="406" class="item">Playwright browser capture for Web App flows</text>
+  <text x="748" y="406" class="item">`hybrid`：先解释项目做什么，再录制实际运行效果。最适合 README</text>
+  <text x="748" y="434" class="item">首页、项目介绍页和产品展示。</text>
   </g>
 <g class="scene s1">
   <text x="64" y="178" class="eyebrow">ANALYZE</text>
@@ -54,7 +54,7 @@
   <circle cx="728" cy="238" r="5" fill="#7aa2ff"/>
   <text x="748" y="244" class="item">Install: npm install</text>
   <circle cx="728" cy="292" r="5" fill="#7aa2ff"/>
-  <text x="748" y="298" class="item">Files sampled: 19</text>
+  <text x="748" y="298" class="item">Files sampled: 40</text>
   </g>
 <g class="scene s2">
   <text x="64" y="178" class="eyebrow">CAPTURE</text>

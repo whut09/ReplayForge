@@ -41,17 +41,20 @@ export async function main(argv) {
   }
 }
 
-function parseOptions(args) {
+export function parseOptions(args) {
   const options = {};
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
     if (arg === "--mode" || arg === "-m") {
+      requireOptionValue(args, index, arg);
       options.mode = args[index + 1];
       index += 1;
     } else if (arg === "--config" || arg === "-c") {
+      requireOptionValue(args, index, arg);
       options.configPath = args[index + 1];
       index += 1;
     } else if (arg === "--out" || arg === "-o") {
+      requireOptionValue(args, index, arg);
       options.outputDir = args[index + 1];
       index += 1;
     } else if (arg === "--allow-run") {
@@ -61,6 +64,10 @@ function parseOptions(args) {
       process.exit(0);
     } else if (!arg.startsWith("-") && !options.target) {
       options.target = arg;
+    } else if (arg.startsWith("-")) {
+      throw new Error(`Unknown option "${arg}".${optionSuggestion(arg)}`);
+    } else {
+      throw new Error(`Unexpected argument "${arg}". Only one target can be provided.`);
     }
   }
   return options;
@@ -104,7 +111,8 @@ async function initCommand(cwd, options) {
 
 async function generateCommand(cwd, options) {
   const target = options.target ? await resolveTarget(cwd, options.target) : { cwd };
-  const config = await loadConfig(target.cwd, options.configPath);
+  const profile = await analyzeProject(target.cwd);
+  const config = await loadConfig(target.cwd, options.configPath, profile);
   if (options.mode) {
     config.mode = options.mode;
   }
@@ -114,7 +122,6 @@ async function generateCommand(cwd, options) {
   validateMode(config.mode);
 
   const remoteNeedsPermission = target.kind === "remote" && !options.allowRun;
-  const profile = await analyzeProject(target.cwd);
   const captureResult = shouldCapture(config.mode) && !process.env.REPLAYFORGE_NO_CAPTURE && !remoteNeedsPermission
     ? await runCapture(target.cwd, config)
     : skippedCapture(config, remoteNeedsPermission);
@@ -187,6 +194,20 @@ function resolveConfigPath(cwd, explicitPath) {
   return path.resolve(cwd, explicitPath ?? "replayforge.config.json");
 }
 
+function requireOptionValue(args, index, option) {
+  const value = args[index + 1];
+  if (!value || value.startsWith("-")) {
+    throw new Error(`Option "${option}" requires a value.`);
+  }
+}
+
+function optionSuggestion(option) {
+  if ("--allow-run".startsWith(option) && option.length >= 4) {
+    return " Did you mean \"--allow-run\"?";
+  }
+  return "";
+}
+
 async function resolveTarget(cwd, target) {
   if (isGitHubTarget(target)) {
     return cloneGitHubTarget(cwd, target);
@@ -212,9 +233,10 @@ async function cloneGitHubTarget(cwd, url) {
   const slug = githubSlug(url);
   const remotesRoot = path.resolve(cwd, ".replayforge/remotes");
   const cloneDir = path.join(remotesRoot, slug);
+  const proxyArgs = await gitProxyArgs(cwd);
   await ensureDir(remotesRoot);
   await safeRemoveInside(remotesRoot, cloneDir);
-  await execFileAsync("git", ["clone", "--depth", "1", url, cloneDir], {
+  await execFileAsync("git", [...proxyArgs, "clone", "--depth", "1", url, cloneDir], {
     cwd,
     timeout: 120_000,
     maxBuffer: 1024 * 1024
@@ -245,6 +267,30 @@ async function safeRemoveInside(parent, target) {
     throw new Error(`Refusing to remove path outside ${resolvedParent}`);
   }
   await rm(resolvedTarget, { recursive: true, force: true });
+}
+
+async function gitProxyArgs(cwd) {
+  const args = [];
+  for (const key of ["http.proxy", "https.proxy"]) {
+    const value = await gitConfigValue(cwd, key);
+    if (value) {
+      args.push("-c", `${key}=${value}`);
+    }
+  }
+  return args;
+}
+
+async function gitConfigValue(cwd, key) {
+  try {
+    const result = await execFileAsync("git", ["config", "--get", key], {
+      cwd,
+      timeout: 10_000,
+      maxBuffer: 128 * 1024
+    });
+    return result.stdout.trim();
+  } catch {
+    return "";
+  }
 }
 
 function skippedCapture(config, remoteNeedsPermission) {

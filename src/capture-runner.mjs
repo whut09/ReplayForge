@@ -17,6 +17,19 @@ export async function runCapture(cwd, config) {
   const commands = (capture.commands ?? []).slice(0, 4);
   const transcript = [];
 
+  if (!commands.length) {
+    return {
+      kind: "terminal",
+      commands,
+      skipped: true,
+      transcript: [
+        "No capture.commands are configured.",
+        "ReplayForge generated explanation and README assets only.",
+        "Add replayforge.config.json capture.commands to record real runtime output."
+      ]
+    };
+  }
+
   for (const command of commands) {
     transcript.push(`$ ${command}`);
     try {

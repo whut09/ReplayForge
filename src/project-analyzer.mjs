@@ -3,19 +3,22 @@ import { listFiles, readJsonIfExists, readTextIfExists } from "./fs-utils.mjs";
 
 export async function analyzeProject(cwd) {
   const packageJson = await readJsonIfExists(path.join(cwd, "package.json"));
+  const pyproject = await readTextIfExists(path.join(cwd, "pyproject.toml"));
   const readme = await readTextIfExists(path.join(cwd, "README.md"));
   const files = await listFiles(cwd);
   const type = detectProjectType({ packageJson, files });
-  const runCommands = detectRunCommands(packageJson, type);
+  const runCommands = detectRunCommands({ packageJson, pyproject, readme, type });
+  const captureCommands = detectCaptureCommands({ packageJson, type });
   const installCommands = detectInstallCommands(files, packageJson);
   const highlights = extractHighlights({ readme, packageJson, files });
 
   return {
-    name: packageJson?.name ?? path.basename(cwd),
-    description: packageJson?.description ?? extractReadmeIntro(readme) ?? "",
+    name: packageJson?.name ?? pyprojectValue(pyproject, "name") ?? path.basename(cwd),
+    description: packageJson?.description ?? extractReadmeIntro(readme) ?? pyprojectValue(pyproject, "description") ?? "",
     type,
     installCommands,
     runCommands,
+    captureCommands,
     highlights,
     files: files.slice(0, 40),
     detectedAt: new Date().toISOString()
@@ -45,7 +48,7 @@ function detectProjectType({ packageJson, files }) {
   return "library";
 }
 
-function detectRunCommands(packageJson, type) {
+function detectRunCommands({ packageJson, pyproject, readme, type }) {
   const scripts = packageJson?.scripts ?? {};
   const candidates = [];
   for (const script of ["demo", "dev", "start", "generate", "build", "test"]) {
@@ -57,10 +60,23 @@ function detectRunCommands(packageJson, type) {
     const binName = typeof packageJson.bin === "string" ? packageJson.name : Object.keys(packageJson.bin)[0];
     candidates.push(`npx ${binName} --help`);
   }
+  if (!candidates.length && type === "python") {
+    const projectScripts = pyprojectScriptNames(pyproject);
+    candidates.push(...readmeCommands(readme).filter((command) => {
+      return projectScripts.some((script) => command === script || command.startsWith(`${script} `));
+    }));
+  }
   return candidates;
 }
 
-function detectInstallCommands(files) {
+function detectCaptureCommands({ packageJson }) {
+  const scripts = packageJson?.scripts ?? {};
+  return ["demo", "start", "generate", "test"]
+    .filter((script) => scripts[script])
+    .map((script) => `npm run ${script}`);
+}
+
+function detectInstallCommands(files, packageJson) {
   if (files.includes("pnpm-lock.yaml")) {
     return ["pnpm install"];
   }
@@ -70,7 +86,7 @@ function detectInstallCommands(files) {
   if (files.includes("yarn.lock")) {
     return ["yarn install"];
   }
-  if (files.includes("package-lock.json") || files.includes("package.json")) {
+  if (files.includes("package-lock.json") || files.includes("package.json") || packageJson) {
     return ["npm install"];
   }
   if (files.includes("pyproject.toml")) {
@@ -79,10 +95,77 @@ function detectInstallCommands(files) {
   return [];
 }
 
+function readmeCommands(readme) {
+  if (!readme) {
+    return [];
+  }
+
+  const commands = [];
+  const codeBlockPattern = /```(?:bash|sh|shell|zsh)?\r?\n([\s\S]*?)```/gi;
+  let match;
+  while ((match = codeBlockPattern.exec(readme))) {
+    for (const line of match[1].split(/\r?\n/)) {
+      const command = line.trim().replace(/^\$\s*/, "");
+      if (command && !command.startsWith("#") && !isInstallCommand(command)) {
+        commands.push(command);
+      }
+    }
+  }
+  return [...new Set(commands)].slice(0, 4);
+}
+
+function isInstallCommand(command) {
+  return /^(npm|pnpm|yarn|bun|pip|uv|poetry)\s+(install|add|sync)/.test(command);
+}
+
+function pyprojectScriptNames(pyproject) {
+  const section = tomlSection(pyproject, "project.scripts");
+  if (!section) {
+    return [];
+  }
+  return section
+    .split(/\r?\n/)
+    .map((line) => line.match(/^([A-Za-z0-9_.-]+)\s*=/)?.[1])
+    .filter(Boolean);
+}
+
+function pyprojectValue(pyproject, key) {
+  const section = tomlSection(pyproject, "project");
+  const match = section?.match(new RegExp(`^${key}\\s*=\\s*["']([^"']+)["']`, "m"));
+  return match?.[1] ?? null;
+}
+
+function tomlSection(toml, sectionName) {
+  if (!toml) {
+    return "";
+  }
+  const lines = toml.split(/\r?\n/);
+  const collected = [];
+  let inSection = false;
+  for (const line of lines) {
+    const heading = line.trim().match(/^\[([^\]]+)\]$/);
+    if (heading) {
+      if (inSection) {
+        break;
+      }
+      inSection = heading[1] === sectionName;
+      continue;
+    }
+    if (inSection) {
+      collected.push(line);
+    }
+  }
+  return collected.join("\n");
+}
+
 function extractHighlights({ readme, packageJson, files }) {
   const highlights = [];
   if (packageJson?.description) {
     highlights.push(packageJson.description);
+  }
+  const intro = extractReadmeIntro(readme);
+  if (intro) {
+    highlights.push(intro);
   }
 
   if (readme) {

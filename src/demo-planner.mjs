@@ -79,9 +79,11 @@ function captureScenes(profile, config, captureResult) {
   return [
     {
       id: "terminal-capture",
-      title: "Real command output",
+      title: captureResult?.skipped ? "Capture needs a command" : "Real command output",
       eyebrow: "Capture",
-      body: "ReplayForge captures the commands users should trust most: install, run, generate and verify.",
+      body: captureResult?.skipped
+        ? "ReplayForge will only execute commands that are explicitly configured or safely detected."
+        : "ReplayForge captures the commands users should trust most: install, run, generate and verify.",
       bullets: transcript.slice(0, 8),
       visual: "terminal"
     }

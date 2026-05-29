@@ -4,15 +4,15 @@ import { pathExists } from "./fs-utils.mjs";
 
 const configNames = ["replayforge.config.json", ".replayforgerc.json"];
 
-export async function loadConfig(cwd, explicitPath) {
+export async function loadConfig(cwd, explicitPath, profile = {}) {
   const configPath = await findConfig(cwd, explicitPath);
   if (!configPath) {
-    return defaultConfig();
+    return defaultConfig(profile);
   }
 
   const raw = await readFile(configPath, "utf8");
   const parsed = JSON.parse(raw);
-  return normalizeConfig(parsed);
+  return normalizeConfig(parsed, profile);
 }
 
 export async function writeDefaultConfig(configPath, profile) {
@@ -35,20 +35,21 @@ async function findConfig(cwd, explicitPath) {
   return null;
 }
 
-function normalizeConfig(config) {
+function normalizeConfig(config, profile = {}) {
+  const defaults = defaultConfig(profile);
   return {
-    ...defaultConfig(),
+    ...defaults,
     ...config,
     project: {
-      ...defaultConfig().project,
+      ...defaults.project,
       ...(config.project ?? {})
     },
     capture: {
-      ...defaultConfig().capture,
+      ...defaults.capture,
       ...(config.capture ?? {})
     },
     explain: {
-      ...defaultConfig().explain,
+      ...defaults.explain,
       ...(config.explain ?? {})
     }
   };
@@ -68,7 +69,7 @@ function defaultConfig(profile = {}) {
     },
     capture: {
       kind: profile.type === "web" ? "browser" : "terminal",
-      commands: profile.runCommands?.length ? profile.runCommands.slice(0, 2) : ["npm run demo"],
+      commands: profile.captureCommands?.length ? profile.captureCommands.slice(0, 2) : [],
       url: "http://localhost:3000",
       actions: []
     },
